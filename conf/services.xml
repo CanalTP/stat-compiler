@@ -25,8 +25,12 @@
             <argument>%db.user%</argument>
             <argument>%db.password%</argument>
             <call method="setAttribute">
-                 <argument type="constant">PDO::ATTR_ERRMODE</argument>
-                 <argument type="constant">PDO::ERRMODE_EXCEPTION</argument>
+                <argument type="constant">PDO::ATTR_ERRMODE</argument>
+                <argument type="constant">PDO::ERRMODE_EXCEPTION</argument>
+            </call>
+            <call method="setAttribute">
+                <argument type="constant">PDO::ATTR_EMULATE_PREPARES</argument>
+                <argument type="constant">true</argument>
             </call>
         </service>
 
