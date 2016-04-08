@@ -15,7 +15,7 @@ class Version20160407082651 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $this->addSql('ALTER TABLE stat_compiled.users ADD COLUMN date_first_request time without time zone;');
+        $this->addSql('ALTER TABLE stat_compiled.users ADD COLUMN date_first_request timestamp without time zone;');
     }
 
     /**
