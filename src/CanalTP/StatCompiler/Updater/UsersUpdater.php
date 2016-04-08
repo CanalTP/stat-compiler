@@ -62,12 +62,6 @@ class UsersUpdater implements UpdaterInterface
                 AND tmpu.request_date < date_first_request'
             );
 
-            //$this->dbConnection->exec('DELETE FROM stat_compiled.users WHERE id in (select id from tmp_users)');
-            //$this->dbConnection->exec(
-            //    'INSERT INTO stat_compiled.users (id, user_name, date_first_request)
-            //     SELECT id, user_name, request_date FROM tmp_users'
-            //);
-
             $this->dbConnection->commit();
         } catch (\PDOException $e) {
             $this->dbConnection->rollBack();
