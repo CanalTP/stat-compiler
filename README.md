@@ -29,6 +29,11 @@ Installation
 
 > parameters.xml
 
+### 4. Migrations
+
+Migrate to last version:
+> php doctrine-migrations.phar -n --configuration=conf/migrations/migrations.yml migrations:migrate
+
 
 How to update database
 -----------------------
