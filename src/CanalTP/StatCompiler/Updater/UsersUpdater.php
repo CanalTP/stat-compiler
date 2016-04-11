@@ -33,7 +33,7 @@ class UsersUpdater implements UpdaterInterface
                     SELECT
                         user_id,
                         first_value(user_name) over (partition by user_id order by request_date DESC) as user_name,
-                        MIN(request_date) as request_date
+                        request_date
                     FROM (
                         SELECT user_id, user_name, MIN(request_date) as request_date
                         FROM stat.requests
@@ -79,7 +79,7 @@ class UsersUpdater implements UpdaterInterface
                 SELECT
                     user_id,
                     first_value(user_name) over (partition by user_id order by request_date DESC) as user_name,
-                    MIN(request_date) as request_date
+                    request_date
                 FROM (
                     SELECT r.user_id, r.user_name, MIN(r.request_date) as request_date
                     FROM stat.requests r
