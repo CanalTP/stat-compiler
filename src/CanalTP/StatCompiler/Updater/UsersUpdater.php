@@ -27,13 +27,13 @@ class UsersUpdater implements UpdaterInterface
 
         try {
             $this->dbConnection->exec(
-                " CREATE TEMPORARY TABLE tmp_users AS
+                "CREATE TEMPORARY TABLE tmp_users AS
                 SELECT DISTINCT user_id as id, user_name, request_date
                 FROM (
                     SELECT
                         user_id,
                         first_value(user_name) over (partition by user_id order by request_date DESC) as user_name,
-                        request_date
+                        MIN(request_date) as request_date
                     FROM (
                         SELECT user_id, user_name, MIN(request_date) as request_date
                         FROM stat.requests
@@ -73,18 +73,20 @@ class UsersUpdater implements UpdaterInterface
     {
         $sqlToRun = array(
             'TRUNCATE TABLE stat_compiled.users',
-            'INSERT INTO stat_compiled.users (id, user_name)
-            SELECT DISTINCT user_id, user_name
+            'INSERT INTO stat_compiled.users (id, user_name, date_first_request)
+            SELECT DISTINCT user_id, user_name, request_date
             FROM (
                 SELECT
                     user_id,
-                    first_value(user_name) over (partition by user_id order by request_date DESC) as user_name
+                    first_value(user_name) over (partition by user_id order by request_date DESC) as user_name,
+                    MIN(request_date) as request_date
                 FROM (
-                    SELECT user_id, user_name, MIN(request_date) as request_date
-                    FROM stat.requests
-                    GROUP BY user_id, user_name
-                ) B
-            ) A',
+                    SELECT r.user_id, r.user_name, MIN(r.request_date) as request_date
+                    FROM stat.requests r
+                    GROUP BY r.user_id, r.user_name
+                ) b
+                GROUP BY user_id, user_name, request_date
+            ) a',
         );
         foreach ($sqlToRun as $sql) {
             $this->logger->debug('Query = ' . $sql);
