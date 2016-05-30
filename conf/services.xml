@@ -13,10 +13,15 @@
             <argument>%logger.loglevel%</argument>
         </service>
 
+        <service id="monolog.processor.processid" class="Monolog\Processor\ProcessIdProcessor" />
+
         <service id="logger" class="Monolog\Logger">
             <argument type="string">updatedb</argument>
             <call method="pushHandler">
                  <argument type="service" id="log.stream_handler" />
+            </call>
+            <call method="pushProcessor">
+                <argument type="service" id="monolog.processor.processid" />
             </call>
         </service>
 
