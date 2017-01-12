@@ -22,6 +22,11 @@ class UpdateDbCommand extends Command
 
     private $updaters = array();
 
+    /**
+     * @var bool
+     */
+    private $metricsLogged = false;
+
     protected function configure()
     {
         $this
@@ -46,13 +51,14 @@ class UpdateDbCommand extends Command
                 'Limit update to given tables',
                 ''
             );
-            
+
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $startDate = \DateTime::createFromFormat('!Y-m-d', $input->getArgument('start_date'));
         $endDate = \DateTime::createFromFormat('!Y-m-d', $input->getArgument('end_date'));
+        $this->metricsLogged = $endDate == $startDate;
 
         if (false === $startDate) {
             throw new \RuntimeException('Wrong start date format (' . $input->getArgument('start_date') . ') expecting YYYY-MM-DD');
@@ -70,15 +76,37 @@ class UpdateDbCommand extends Command
         $tables = array();
         if ('' !== $input->getOption('only-update')) {
             $tables = explode(',', $input->getOption('only-update'));
-        } 
-        
+        }
+        $beginExecution = new \DateTime();
         foreach ($this->updaters as $upd) {
             if (empty($tables) || in_array($upd->getAffectedTable(), $tables)) {
-                $this->logger->info("Launching " . get_class($upd));
+                $nameSpace = get_class($upd);
+                $this->logger->info("Launching " . $nameSpace);
+                $beginTable = new \DateTime();
                 $upd->update($startDate, $endDate);
+                $endTable = new \DateTime();
+                $this->logMetrics($beginExecution, $startDate, $nameSpace, $endTable->getTimestamp() - $beginTable->getTimestamp());
             }
         }
+        $endExecution = new \DateTime();
+        $this->logMetrics($beginExecution, $startDate, 'TOTAL', $endExecution->getTimestamp() - $beginExecution->getTimestamp());
         $this->logger->info('Update ended');
+    }
+
+    private function logMetrics(\DateTime $date, \DateTime $periodDate, $table, $duration)
+    {
+        if ($this->metricsLogged) {
+            $durationMinutes = floor($duration / 60);
+            $durationSeconds = $duration - (60 * $durationMinutes);
+            $this->logger->info(
+                sprintf('[stat-compiler] [OK] [%s] [%s] [%s] [%dm%ds]',
+                    $date->format('Y-m-d H:i:s'),
+                    $periodDate->format('Y-m-d'),
+                    $table,
+                    $durationMinutes, $durationSeconds
+                )
+            );
+        }
     }
 
     public function addUpdater(UpdaterInterface $updater)
