@@ -12,16 +12,24 @@
             <argument type="expression">container.hasParameter('logger.maxfiles') ? parameter('logger.maxfiles') : 7</argument>
             <argument>%logger.loglevel%</argument>
         </service>
+        <service id="log.syslog_handler" class="Monolog\Handler\SyslogHandler">
+            <argument>stat-compiler</argument>
+            <argument>local7</argument>
+            <argument>%logger.loglevel%</argument>
+            <call method="setFormatter">
+                <argument type="service" id="log.syslog_formatter" />
+            </call>
+        </service>
+        <service id="log.syslog_formatter" class="Monolog\Formatter\LineFormatter">
+            <argument>%%message%%</argument>
+        </service>
 
         <service id="monolog.processor.processid" class="Monolog\Processor\ProcessIdProcessor" />
 
         <service id="logger" class="Monolog\Logger">
             <argument type="string">updatedb</argument>
             <call method="pushHandler">
-                 <argument type="service" id="log.stream_handler" />
-            </call>
-            <call method="pushProcessor">
-                <argument type="service" id="monolog.processor.processid" />
+                <argument type="expression">service(container.hasParameter('logger.handler') ? parameter('logger.handler') : 'log.stream_handler')</argument>
             </call>
         </service>
 
