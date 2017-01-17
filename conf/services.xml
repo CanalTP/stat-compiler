@@ -14,7 +14,7 @@
         </service>
         <service id="log.syslog_handler" class="Monolog\Handler\SyslogHandler">
             <argument>stat-compiler</argument>
-            <argument>local7</argument>
+            <argument>%logger.facility%</argument>
             <argument>%logger.loglevel%</argument>
             <call method="setFormatter">
                 <argument type="service" id="log.syslog_formatter" />

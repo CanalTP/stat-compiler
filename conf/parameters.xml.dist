@@ -11,5 +11,6 @@
         <parameter key="logger.file" type="string">/tmp/stat_compiler.log</parameter>
         <parameter key="logger.maxfiles" type="string">7</parameter>
         <parameter key="logger.handler" type="string">log.syslog_handler</parameter>
+        <parameter key="logger.facility" type="string">local7</parameter>
     </parameters>
 </container>
