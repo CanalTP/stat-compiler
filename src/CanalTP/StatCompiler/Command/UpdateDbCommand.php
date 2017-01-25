@@ -8,13 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 use CanalTP\StatCompiler\Updater\UpdaterInterface;
-use CanalTP\StatCompiler\Updater\ErrorStatsUpdater;
-use CanalTP\StatCompiler\Updater\RequestCallsUpdater;
-
 use Psr\Log\LoggerAwareTrait;
-
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 
 class UpdateDbCommand extends Command
 {
@@ -96,14 +90,12 @@ class UpdateDbCommand extends Command
     private function logMetrics(\DateTime $date, \DateTime $periodDate, $table, $duration)
     {
         if ($this->metricsLogged) {
-            $durationMinutes = floor($duration / 60);
-            $durationSeconds = $duration - (60 * $durationMinutes);
             $this->logger->info(
-                sprintf('[stat-compiler] [OK] [%s] [%s] [%s] [%dm%ds]',
+                sprintf('[stat-compiler] [OK] [%s] [%s] [%s] [%d]',
                     $date->format('Y-m-d H:i:s'),
                     $periodDate->format('Y-m-d'),
                     $table,
-                    $durationMinutes, $durationSeconds
+                    $duration
                 )
             );
         }
