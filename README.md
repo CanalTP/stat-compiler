@@ -31,6 +31,10 @@ Installation
 
 ### 4. Migrations
 
+Create in conf/migrations folder your own migrations-db.php file based on *.dist ones
+
+you need to create an db user named "usrsql_nmp_stat"
+
 Migrate to last version:
 > php doctrine-migrations.phar -n --configuration=conf/migrations/migrations.yml migrations:migrate
 
