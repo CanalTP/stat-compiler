@@ -87,14 +87,16 @@ class UpdateDbCommand extends Command
         $this->logger->info('Update ended');
     }
 
-    private function logMetrics(\DateTime $date, \DateTime $periodDate, $table, $duration)
+    private function logMetrics(\DateTime $date, \DateTime $periodDate, $nameSpace, $duration)
     {
         if ($this->metricsLogged) {
+            $nameSpaceArray = explode("\\", $nameSpace);
+            $updater = str_replace('Updater', '', end($nameSpaceArray));
             $this->logger->info(
                 sprintf('[stat-compiler] [OK] [%s] [%s] [%s] [%d]',
                     $date->format('Y-m-d H:i:s'),
                     $periodDate->format('Y-m-d'),
-                    $table,
+                    $updater,
                     $duration
                 )
             );
