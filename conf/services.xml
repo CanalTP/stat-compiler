@@ -123,60 +123,6 @@
             <tag name="initdb.updater" />
         </service>
 
-        <service id="updaters.coverage_modes" class="CanalTP\StatCompiler\Updater\CoverageModesUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
-        <service id="updaters.coverage_journeys" class="CanalTP\StatCompiler\Updater\CoverageJourneysUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
-        <service id="updaters.coverage_networks" class="CanalTP\StatCompiler\Updater\CoverageNetworksUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
-        <service id="updaters.coverage_stop_areas" class="CanalTP\StatCompiler\Updater\CoverageStopAreasUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
-        <service id="updaters.coverage_journeys_transfers" class="CanalTP\StatCompiler\Updater\CoverageJourneysTransfersUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
-        <service id="updaters.coverage_journeys_requests_params" class="CanalTP\StatCompiler\Updater\CoverageJourneysRequestsParamsUpdater">
-            <argument type="service" id="dbconnection" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="updatedb.updater" />
-            <tag name="initdb.updater" />
-        </service>
-
         <service id="updaters.token_stats" class="CanalTP\StatCompiler\Updater\TokenStatsUpdater">
             <argument type="service" id="dbconnection" />
             <call method="setLogger">
