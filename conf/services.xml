@@ -60,6 +60,15 @@
         </service>
 
         <!-- Updaters -->
+        <service id="updaters.coverage_journeys_transfers" class="CanalTP\StatCompiler\Updater\CoverageJourneysTransfersUpdater">
+            <argument type="service" id="dbconnection" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="updatedb.updater" />
+            <tag name="initdb.updater" />
+        </service>
+        
         <service id="updaters.journey_request_stats" class="CanalTP\StatCompiler\Updater\JourneyRequestStatsUpdater">
             <argument type="service" id="dbconnection" />
             <call method="setLogger">
